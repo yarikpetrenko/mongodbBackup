@@ -2,20 +2,20 @@ const { spawn } = require("child_process");
 const path = require("path");
 
 const backupMongoDBService = () => {
-  const backupPath = path.join(
+  const backupPath = path.resolve(
     __dirname,
-    "public",
+    "../public",
     `${process.env.DB_NAME}.gzip`
   );
 
   const child = spawn("mongodump", [
     ...process.env.DB_FLAGS.split(" "),
-    `--host ${process.env.DB_HOST}`,
-    `-u ${process.env.DB_USER}`,
-    `-p ${process.env.DB_PWD}`,
-    `--authenticationDatabase ${process.env.DB_AUTH}`,
-    `--db ${process.env.DB_NAME}`,
-    `--archive ${backupPath}`,
+    `--host=${process.env.DB_HOST}`,
+    `-u=${process.env.DB_USER}`,
+    `-p=${process.env.DB_PWD}`,
+    `--authenticationDatabase=${process.env.DB_AUTH}`,
+    `--db=${process.env.DB_NAME}`,
+    `--archive=${backupPath}`,
   ]);
 
   child.stdout.on("data", (data) => {
