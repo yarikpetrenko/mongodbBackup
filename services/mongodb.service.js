@@ -1,6 +1,16 @@
 const { spawn } = require("child_process");
 const path = require("path");
 
+const clearChildListeners = (child) => {
+  try {
+    child.removeAllListeners("error");
+    child.stderr.removeAllListeners("data");
+    child.stdout.removeAllListeners("data");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const backupMongoDBService = () => {
   const backupPath = path.resolve(
     __dirname,
@@ -27,10 +37,12 @@ const backupMongoDBService = () => {
   });
 
   child.once("error", (e) => {
+    clearChildListeners(child);
     console.log(e);
   });
 
   child.once("exit", (code, signal) => {
+    clearChildListeners(child);
     if (code) {
       console.log("Process exit with code:", code);
     } else if (signal) {
