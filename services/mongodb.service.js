@@ -36,9 +36,9 @@ const backupMongoDBService = () => {
     child.once("exit", (code, signal) => {
       clearChildListeners(child);
       if (code) {
-        reject("Process exit with code:", code);
+        reject(`Process exit with code: ${code}`);
       } else if (signal) {
-        reject("Process killed with signal:", signal);
+        reject(`Process killed with signal: ${signal}`);
       } else {
         resolve();
       }
