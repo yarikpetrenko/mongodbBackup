@@ -26,3 +26,4 @@ Here you need to add **--gzip** for correct work. All flags must be separated by
       port: // Your port,
     });`
     [docs](https://www.npmjs.com/package/ftp#methods)
+- The script runs every day at midnight. You can change it in **index.js** - `cron.schedule("* * * * *")`. Here you can specify the time in cron format. [package docs](https://www.npmjs.com/package/node-cron), [cron generator](https://crontab.guru/)
