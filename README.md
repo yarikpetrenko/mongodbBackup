@@ -19,7 +19,7 @@ Here you need to add **--gzip** for correct work. All flags must be separated by
 **NOTES**
 
 - By default it uses port 21 for FTP connection, if you want to make SFTP or so, you need to specify it inside **ftp.service.js** - 
-    `client.connect({z
+    `client.connect({
       host: process.env.FTP_HOST,
       user: process.env.FTP_USER,
       password: process.env.FTP_PWD,
