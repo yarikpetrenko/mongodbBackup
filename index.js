@@ -3,7 +3,7 @@ const cron = require("node-cron");
 const { saveMongoBackupService } = require("./services/ftp.service");
 const { backupMongoDBService } = require("./services/mongodb.service");
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 0 * * *", async () => {
   try {
     await backupMongoDBService();
     await saveMongoBackupService();
