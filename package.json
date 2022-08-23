@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.1",
+    "ftp": "^0.3.10",
     "node-cron": "^3.0.2"
   }
 }

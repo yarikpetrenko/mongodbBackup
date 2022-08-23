@@ -4,20 +4,21 @@ const path = require("path");
 const clearChildListeners = (child) => {
   try {
     child.removeAllListeners("error");
-    child.stderr.removeAllListeners("data");
-    child.stdout.removeAllListeners("data");
+    child.removeAllListeners("exit");
   } catch (e) {
     console.log(e);
   }
 };
 
 const backupMongoDBService = () => {
+  // Get backup path
   const backupPath = path.resolve(
     __dirname,
     "../public",
     `${process.env.DB_NAME}.gzip`
   );
 
+  // Run backup command
   const child = spawn("mongodump", [
     ...process.env.DB_FLAGS.split(" "),
     `--host=${process.env.DB_HOST}`,
@@ -28,27 +29,19 @@ const backupMongoDBService = () => {
     `--archive=${backupPath}`,
   ]);
 
-  child.stdout.on("data", (data) => {
-    console.log(data?.toString());
-  });
-
-  child.stderr.on("data", (e) => {
-    console.log(e?.toString());
-  });
-
+  // Error handler
   child.once("error", (e) => {
     clearChildListeners(child);
-    console.log(e);
+    throw e;
   });
 
+  // Exit handler
   child.once("exit", (code, signal) => {
     clearChildListeners(child);
     if (code) {
-      console.log("Process exit with code:", code);
+      throw new Error("Process exit with code:", code);
     } else if (signal) {
-      console.log("Process killed with signal:", signal);
-    } else {
-      console.log("Backup is successful");
+      throw new Error("Process killed with signal:", signal);
     }
   });
 };
